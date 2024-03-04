@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$KAT</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome CDN for the copy icon -->
 <link rel="icon" href="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmUiKWZaoSGQ21hUxCTrKf8drgNKub3bVcB4USLUcqNsFb" type="image/png"> <!-- Favicon for the browser tab -->
 <style>
     body {
@@ -60,10 +59,19 @@
     .copy-icon {
         cursor: pointer;
     }
+    canvas {
+        border: 2px solid black;
+    }
 </style>
 
 </head>
 <body>
+
+<!-- Embedding the MP3 file as background music -->
+<audio autoplay loop>
+  <source src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmWozN9MmPMiw7xx4dpk7aHS43A2r8vk1LLeTMLh3mmLcJ" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
 <h1>$KAT</h1>
 <div>
@@ -87,12 +95,14 @@
 
 <div id="about">
     <h2>About</h2>
-    <p>draweing of kat</p>
     <p>juss a kat on teh blokchein</p>
+    <p>drawl yuor own kat bilow</p>
 </div>
 
-<!-- GIF under the About section -->
-<img src="https://media1.tenor.com/m/qKjNzO6KRYIAAAAd/cat-trump.gif" alt="Animated Cat" width="375">
+<!-- Drawing Pad -->
+<canvas id="drawingCanvas" width="400" height="400"></canvas><br>
+<button class="button" onclick="clearCanvas()">Clear</button>
+<button class="button" onclick="saveImage()">Save</button>
 
 <div id="tokenomics">
     <h2>Tokenomics</h2>
@@ -115,6 +125,51 @@ function copyToClipboard(text) {
     }, function(err) {
         console.error('Async: Could not copy text: ', err);
     });
+}
+
+// Drawing Pad
+const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
+
+let drawing = false;
+let lastX = 0;
+let lastY = 0;
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', endDrawing);
+canvas.addEventListener('mouseout', endDrawing);
+
+function startDrawing(e) {
+    drawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
+function draw(e) {
+    if (!drawing) return;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.strokeStyle = '#000'; // black color
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY];
+}
+
+function endDrawing() {
+    drawing = false;
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function saveImage() {
+    const dataURL = canvas.toDataURL();
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'stick_figure.png';
+    link.click();
 }
 </script>
 

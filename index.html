@@ -160,38 +160,50 @@ function copyToClipboard() {
 // Drawing Pad functionality
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
-let drawing = false;
-let lastX = 0;
-let lastY = 0;
+let isDrawing = false;
 
-canvas.addEventListener('touchstart', (e) => startDrawing(e));
-canvas.addEventListener('touchmove', (e) => draw(e));
-canvas.addEventListener('touchend', () => endDrawing());
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('touchstart', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('touchmove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('touchend', stopDrawing);
 
-function startDrawing(e) {
-    drawing = true;
-    [lastX, lastY] = [e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop];
+function startDrawing(event) {
+    isDrawing = true;
+    const [x, y] = getCursorPosition(event);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
 }
 
-function draw(e) {
-    if (!drawing) return;
-    e.preventDefault(); // Prevent scrolling on touch devices
-    ctx.beginPath();
-    ctx.moveTo(lastX, lastY);
-    [lastX, lastY] = [e.touches[0].clientX - canvas.offsetLeft, e.touches[0].clientY - canvas.offsetTop];
-    ctx.lineTo(lastX, lastY);
-    ctx.strokeStyle = '#000'; // Set the drawing color to black
-    ctx.lineWidth = 2;
+function draw(event) {
+    if (!isDrawing) return;
+    const [x, y] = getCursorPosition(event);
+    ctx.lineTo(x, y);
     ctx.stroke();
 }
 
-function endDrawing() {
-    drawing = false;
+function stopDrawing() {
+    isDrawing = false;
+}
+
+function getCursorPosition(event) {
+    let x, y;
+    if (event.touches && event.touches.length) {
+        const rect = canvas.getBoundingClientRect();
+        x = event.touches[0].clientX - rect.left;
+        y = event.touches[0].clientY - rect.top;
+    } else {
+        x = event.offsetX;
+        y = event.offsetY;
+    }
+    return [x, y];
 }
 
 function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
+
 function saveImage() {
     // Save the current canvas state
     const currentFillStyle = ctx.fillStyle;

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>$KAT Meme Coin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> <!-- Font Awesome CDN for the copy icon -->
+<style>
+    body {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
+        background-color: #f0e68c;
+        text-align: center;
+        padding: 20px;
+    }
+    .button {
+        font-family: inherit;
+        padding: 10px 20px;
+        margin: 10px;
+        background-color: #ffcccb;
+        border: 2px solid black;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .button:hover {
+        background-color: #f77;
+    }
+    .images-container {
+        position: relative;
+        display: inline-block;
+    }
+    .images-container img.main-image {
+        width: 375px; /* Adjust as needed */
+        vertical-align: middle;
+        position: relative;
+        margin-top: -20px; /* Move the image up; adjust this value as needed */
+    }
+    .images-container img.new-image {
+        position: absolute;
+        left: -115px; /* Adjust as needed to move more to the left */
+        top: 75px; /* Adjust as needed to move the image up or down */
+        width: 150px; /* Adjust as needed */
+    }
+    img {
+        margin: 20px 0;
+    }
+    #tokenomics, #about, #disclaimer {
+        margin-top: 30px;
+    }
+    #disclaimer {
+        font-size: small;
+        color: #667;
+        margin-top: 50px;
+    }
+    .contract-address {
+        display: inline-block;
+        margin-right: 5px; /* Adjust spacing between text and icon */
+    }
+    .copy-icon {
+        cursor: pointer;
+    }
+</style>
+
+</head>
+<body>
+
+<h1>$KAT</h1>
+<div>
+    <span class="contract-address">CA: So11111111111111111111111111111111111111112</span>
+    <i class="fa fa-copy copy-icon" onclick="copyToClipboard('So11111111111111111111111111111111111111112')" title="Copy to clipboard"></i>
+</div>
+
+<div class="images-container">
+    <!-- New image positioned to the left -->
+    <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmWhRb1HjGnJoyu1eEZECvL4w9Vi3ihSE5CMAqfWZWfVLV" alt="Additional KAT Image" class="new-image">
+    <!-- Existing central image -->
+    <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmPicTLFhzCBcYaNToqBTi7X12afwjwmTvsSYooCCWpRJL" alt="$KAT Token" class="main-image" style="position: relative;">
+</div>
+
+<div>
+    <!-- Buttons -->
+    <button class="button" onclick="window.location.href='https://raydium.io';">BUY</button>
+    <button class="button" onclick="window.location.href='https://twitter.com';">TWITTER</button>
+    <button class="button" onclick="window.location.href='https://telegram.org';">TELEGRAM</button>
+</div>
+
+<div id="about">
+    <h2>About</h2>
+    <p>it's just a drawing of a kat</p>
+</div>
+
+<!-- GIF under the About section -->
+<img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmXaV3evfpFwbapj9LuMshF2wY7mASFAnrsFpv7oVP8exs" alt="Animated Cat" width="375">
+
+<div id="tokenomics">
+    <h2>Tokenomics</h2>
+    <p>Buy/Sell Tax: 0%</p>
+    <p>Team: 5%</p>
+    <p>Marketing: 5%</p>
+    <p>LP: Burned</p>
+    <p>Mint: Revoked</p>
+</div>
+
+<div id="disclaimer">
+    <h2>Disclaimer</h2>
+    <p>$KAT is a memecoin made purely for entertainment purposes and should not be interpreted as financial advice.</p>
+</div>
+
+<script>
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(function() {
+        alert('Contract address copied to clipboard');
+    }, function(err) {
+        console.error('Async: Could not copy text: ', err);
+    });
+}
+</script>
+
+</body>
+</html>

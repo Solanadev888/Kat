@@ -169,6 +169,11 @@ canvas.addEventListener('touchmove', draw);
 canvas.addEventListener('mouseup', stopDrawing);
 canvas.addEventListener('touchend', stopDrawing);
 
+// Add touchmove event listener to prevent default scrolling behavior
+canvas.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
 function startDrawing(event) {
     isDrawing = true;
     const [x, y] = getCursorPosition(event);
@@ -256,6 +261,7 @@ function toggleBackgroundMusic() {
         audio.pause();
     }
 }
+
 </script>
 
 </body>

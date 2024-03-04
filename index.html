@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>$KAT</title>
-<link rel="icon" href="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmUiKWZaoSGQ21hUxCTrKf8drgNKub3bVcB4USLUcqNsFb" type="image/png"> <!-- Favicon for the browser tab -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Font Awesome icons -->
+<link rel="icon" href="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmUiKWZaoSGQ21hUxCTrKf8drgNKub3bVcB4USLUcqNsFb" type="image/png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
     body {
         font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
@@ -30,17 +30,20 @@
         position: relative;
         display: inline-block;
     }
+    .images-container img {
+        pointer-events: none; /* Prevent images from being selected */
+    }
     .images-container img.main-image {
-        width: 375px; /* Adjust as needed */
+        width: 375px; /* Adjusted for desktop */
         vertical-align: middle;
         position: relative;
         margin-top: -20px; /* Move the image up; adjust this value as needed */
     }
     .images-container img.new-image {
         position: absolute;
-        left: -115px; /* Adjust as needed to move more to the left */
-        top: 75px; /* Adjust as needed to move the image up or down */
-        width: 150px; /* Adjust as needed */
+        left: -115px; /* Adjusted for desktop */
+        top: 75px; /* Adjusted for desktop */
+        width: 150px; /* Adjusted for desktop */
     }
     img {
         margin: 20px 0;
@@ -50,45 +53,59 @@
     }
     #disclaimer {
         font-size: small;
-        color: #667;
+        color: #663;
         margin-top: 50px;
+    }
+    .contract-wrapper {
+        display: inline-block;
     }
     .contract-address {
         display: inline-block;
-        margin-right: 5px; /* Adjust spacing between text and icon */
+        margin-right: 5px;
+        user-select: text;
     }
     .copy-icon {
         cursor: pointer;
     }
     canvas {
         border: 2px solid black;
+        max-width: 100%; /* Adjusted for mobile */
+    }
+    @media only screen and (max-width: 768px) {
+        .images-container img.main-image {
+            width: 80%; /* Adjusted for mobile */
+        }
+        .images-container img.new-image {
+            width: 60%; /* Adjusted for mobile */
+            left: -70px; /* Adjusted for mobile */
+            top: 50px; /* Adjusted for mobile */
+        }
     }
 </style>
-
 </head>
 <body>
 
-<!-- Embedding the MP3 file as background music -->
 <audio id="backgroundMusic" autoplay loop>
-  <source src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmWozN9MmPMiw7xx4dpk7aHS43A2r8vk1LLeTMLh3mmLcJ" type="audio/mpeg">
+  <source src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmRTFSenk68MyWDHb1fdRehyFBns6gBr5oiuzmmcy1tiL8" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
 <h1>$KAT</h1>
 <div>
-    <span class="contract-address">CA: So11111111111111111111111111111111111111112</span>
-    <i class="fa fa-copy copy-icon" onclick="copyToClipboard('So11111111111111111111111111111111111111112')" title="Copy to clipboard"></i>
+    <div id="contractWrapper" class="contract-wrapper">
+        <span id="contractAddress" class="contract-address">CA: So11111111111111111111111111111111111111112</span>
+        <i class="fa fa-copy copy-icon" title="Copy to clipboard" onclick="copyToClipboard()"></i>
+    </div>
 </div>
 
 <div class="images-container">
     <!-- New image positioned to the left -->
     <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmWhRb1HjGnJoyu1eEZECvL4w9Vi3ihSE5CMAqfWZWfVLV" alt="Additional KAT Image" class="new-image">
     <!-- Existing central image -->
-    <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmPicTLFhzCBcYaNToqBTi7X12afwjwmTvsSYooCCWpRJL" alt="$KAT Token" class="main-image" style="position: relative;">
+    <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmPicTLFhzCBcYaNToqBTi7X12afwjwmTvsSYooCCWpRJL" alt="$KAT Token" class="main-image">
 </div>
 
 <div>
-    <!-- Buttons -->
     <button class="button" onclick="window.location.href='https://raydium.io';">BUY</button>
     <button class="button" onclick="window.location.href='https://twitter.com/katcoinsol';">TWITTER</button>
     <button class="button" onclick="window.location.href='https://t.me/katcoinsol';">TELEGRAM</button>
@@ -98,10 +115,9 @@
 <div id="about">
     <h2>About</h2>
     <p>juss a kat on teh blokchein</p>
-    <p>drawl yuor own kat bilow</p>
+    <p>🐱 drawl yuor own kat bilow 🐱</p>
 </div>
 
-<!-- Drawing Pad -->
 <canvas id="drawingCanvas" width="400" height="400"></canvas><br>
 <button class="button" onclick="clearCanvas()">Clear</button>
 <button class="button" onclick="saveImage()">Save</button>
@@ -122,26 +138,26 @@
 </div>
 
 <script>
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
-        alert('Contract address copied to clipboard');
-    }, function(err) {
-        console.error('Async: Could not copy text: ', err);
+function copyToClipboard() {
+    const text = document.getElementById('contractAddress').innerText; // Using innerText instead of textContent
+    navigator.clipboard.writeText(text).then(() => {
+        alert('Contract address copied to clipboard.');
+    }).catch(err => {
+        console.error('Error copying text to clipboard:', err);
     });
 }
 
-// Drawing Pad
+// Drawing Pad functionality
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
-
 let drawing = false;
 let lastX = 0;
 let lastY = 0;
 
-canvas.addEventListener('mousedown', startDrawing);
-canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', endDrawing);
-canvas.addEventListener('mouseout', endDrawing);
+canvas.addEventListener('mousedown', (e) => startDrawing(e));
+canvas.addEventListener('mousemove', (e) => draw(e));
+canvas.addEventListener('mouseup', () => endDrawing());
+canvas.addEventListener('mouseout', () => endDrawing());
 
 function startDrawing(e) {
     drawing = true;
@@ -153,7 +169,7 @@ function draw(e) {
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.strokeStyle = '#000'; // black color
+    ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
     ctx.stroke();
     [lastX, lastY] = [e.offsetX, e.offsetY];
@@ -171,12 +187,12 @@ function saveImage() {
     const dataURL = canvas.toDataURL();
     const link = document.createElement('a');
     link.href = dataURL;
-    link.download = 'stick_figure.png';
+    link.download = 'kat_drawing.png';
     link.click();
 }
 
 function tweetImage() {
-    const tweetText = encodeURIComponent("Just drew a kat on the blockchain!");
+    const tweetText = encodeURIComponent("jst drawed a kat on teh blokchein! $KAT 🐱");
     const imageURL = encodeURIComponent(canvas.toDataURL());
     const tweetURL = `https://twitter.com/intent/tweet?text=${tweetText}&url=${imageURL}`;
     window.open(tweetURL, '_blank');

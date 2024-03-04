@@ -141,8 +141,9 @@
 
 <script>
 function copyToClipboard() {
-    const text = document.getElementById('contractAddress').innerText; // Using innerText instead of textContent
-    navigator.clipboard.writeText(text).then(() => {
+    const fullText = document.getElementById('contractAddress').innerText; // Get the full text including "CA:"
+    const address = fullText.split(' ')[1]; // Split the string by space and get the second part (the address)
+    navigator.clipboard.writeText(address).then(() => {
         alert('Contract address copied to clipboard.');
     }).catch(err => {
         console.error('Error copying text to clipboard:', err);

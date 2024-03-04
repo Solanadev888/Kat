@@ -70,6 +70,7 @@
     canvas {
         border: 2px solid black;
         max-width: 100%; /* Adjusted for mobile */
+        background-color: #dde6cd; /* Set background color to #dde6cd */
     }
     @media only screen and (max-width: 768px) {
         .images-container img.main-image {
@@ -115,7 +116,8 @@
 <div id="about">
     <h2>About</h2>
     <p>juss a kat on teh blokchein</p>
-    <p>🐱 drawl yuor own kat bilow 🐱</p>
+    <p>✏️ drawl ur own kat bilow ✏️</p>
+    <p>🐱 save kat b4 tweet 🐱</p>
 </div>
 
 <canvas id="drawingCanvas" width="400" height="400"></canvas><br>
@@ -169,7 +171,7 @@ function draw(e) {
     ctx.beginPath();
     ctx.moveTo(lastX, lastY);
     ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = '#000'; // Set the drawing color to black
     ctx.lineWidth = 2;
     ctx.stroke();
     [lastX, lastY] = [e.offsetX, e.offsetY];
@@ -182,19 +184,47 @@ function endDrawing() {
 function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
-
 function saveImage() {
+    // Save the current canvas state
+    const currentFillStyle = ctx.fillStyle;
+    const currentStrokeStyle = ctx.strokeStyle;
+
+    // Save the drawing as an image without clearing the canvas
     const dataURL = canvas.toDataURL();
-    const link = document.createElement('a');
-    link.href = dataURL;
-    link.download = 'kat_drawing.png';
-    link.click();
+
+    // Create a new canvas element to draw the image on
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+
+    // Fill the temp canvas with the background color
+    tempCtx.fillStyle = '#dde6cd'; // Background color
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+    // Load the saved drawing onto the temp canvas
+    const img = new Image();
+    img.onload = function() {
+        tempCtx.drawImage(img, 0, 0);
+        
+        // Save the image with the drawing on top of the background color
+        const link = document.createElement('a');
+        link.href = tempCanvas.toDataURL();
+        link.download = 'kat_drawing.png';
+        link.click();
+    };
+    img.src = dataURL;
+
+    // Restore the previous canvas state
+    ctx.fillStyle = currentFillStyle;
+    ctx.strokeStyle = currentStrokeStyle;
 }
 
 function tweetImage() {
-    const tweetText = encodeURIComponent("jst drawed a kat on teh blokchein! $KAT 🐱");
-    const imageURL = encodeURIComponent(canvas.toDataURL());
-    const tweetURL = `https://twitter.com/intent/tweet?text=${tweetText}&url=${imageURL}`;
+    const tweetText = encodeURIComponent("jst drawed a kat on teh blokchein! #KAT 🐱");
+
+    // Open Twitter for composing a tweet with the provided text
+    const tweetURL = `https://twitter.com/intent/tweet?text=${tweetText}`;
     window.open(tweetURL, '_blank');
 }
 

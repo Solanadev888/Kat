@@ -32,6 +32,212 @@
         }
         .images-container img {
             pointer-events: none; /* Prevent images from being selected */
+            width: 375px; /* Adjusted for desktop */
+            vertical-align: middle;
+            position: relative;
+            margin-top: -20px; /* Move the image up; adjust this value as needed */
+            max-width: 100%; /* Ensure images don't overflow on mobile */
+        }
+        #tokenomics, #about, #disclaimer {
+            margin-top: 30px;
+        }
+        #disclaimer {
+            font-size: small;
+            color: #663;
+            margin-top: 50px;
+        }
+        .contract-wrapper {
+            display: inline-block;
+        }
+        .contract-address {
+            display: inline-block;
+            margin-right: 5px;
+            user-select: text;
+            font-size: 14px; /* Reduced font size for mobile */
+        }
+        .copy-icon {
+            cursor: pointer;
+        }
+        canvas {
+            border: 2px solid black;
+            width: 90%; /* Adjusted for mobile */
+            max-width: 400px; /* Limit canvas width on desktop */
+            margin: 10px auto; /* Center the canvas */
+            background-color: #dde6cd; /* Set background color to #dde6cd */
+        }
+        @media only screen and (max-width: 768px) {
+            .images-container img {
+                width: 80%; /* Adjusted for mobile */
+            }
+            .contract-address {
+                font-size: 12px; /* Further reduce font size for smaller screens */
+            }
+        }
+    </style>
+</head>
+<body>
+<audio id="backgroundMusic" autoplay loop>
+    <source src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmRTFSenk68MyWDHb1fdRehyFBns6gBr5oiuzmmcy1tiL8" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<h1>$KAT</h1>
+<div>
+    <div id="contractWrapper" class="contract-wrapper">
+        <span id="contractAddress" class="contract-address">CA: So11111111111111111111111111111111111111112</span>
+        <i class="fa fa-copy copy-icon" title="Copy to clipboard" onclick="copyToClipboard()"></i>
+    </div>
+</div>
+<div class="images-container">
+    <!-- Existing central image -->
+    <img src="https://sapphire-solid-dolphin-824.mypinata.cloud/ipfs/QmcmkGvm4FeyUEc51WXFSzue2rghm2Fnfh9GtPQ4HMZ5gm" alt="$KAT Token" class="main-image">
+</div>
+<div>
+    <button class="button" onclick="window.location.href='https://raydium.io';">BUY</button>
+    <button class="button" onclick="window.location.href='https://twitter.com/katcoinsol';">TWITTER</button>
+    <button class="button" onclick="window.location.href='https://t.me/katcoinsol';">TELEGRAM</button>
+    <button class="button" onclick="toggleBackgroundMusic()"><i class="fas fa-play"></i></button>
+</div>
+<div id="about">
+    <h2>About</h2>
+    <p>juss a kat on teh blokchein</p>
+    <p>✏️ drawl ur own kat bilow ✏️</p>
+    <p>🐱 save kat b4 tweet 🐱</p>
+</div>
+<canvas id="drawingCanvas" width="400" height="400"></canvas><br>
+<button class="button" onclick="clearCanvas()">Clear</button>
+<button class="button" onclick="saveImage()">Save</button>
+<button class="button" onclick="tweetImage()">Tweet</button>
+<div id="tokenomics">
+    <h2>Tokenomics</h2>
+    <p>Buy/Sell Tax: 0%</p>
+    <p>Team: 5%</p>
+    <p>Marketing: 5%</p>
+    <p>LP: Burned</p>
+    <p>Mint: Revoked</p>
+</div>
+<div id="disclaimer">
+    <h2>Disclaimer</h2>
+    <p>$KAT is a memecoin made purely for entertainment purposes and should not be interpreted as financial advice.</p>
+</div>
+<script>
+function copyToClipboard() {
+    const fullText = document.getElementById('contractAddress').innerText;
+    const address = fullText.split(' ')[1];
+    navigator.clipboard.writeText(address).then(() => {
+        alert('Contract address copied to clipboard.');
+    }).catch(err => {
+        console.error('Error copying text to clipboard:', err);
+    });
+}
+
+const canvas = document.getElementById('drawingCanvas');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('touchstart', startDrawing);
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('touchmove', draw);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('touchend', stopDrawing);
+
+canvas.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
+function startDrawing(event) {
+    isDrawing = true;
+    const [x, y] = getCursorPosition(event);
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+}
+
+function draw(event) {
+    if (!isDrawing) return;
+    const [x, y] = getCursorPosition(event);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+}
+
+function stopDrawing() {
+    isDrawing = false;
+}
+
+function getCursorPosition(event) {
+    let x, y;
+    if (event.touches && event.touches.length) {
+        const rect = canvas.getBoundingClientRect();
+        x = event.touches[0].clientX - rect.left;
+        y = event.touches[0].clientY - rect.top;
+    } else {
+        x = event.offsetX;
+        y = event.offsetY;
+    }
+    return [x, y];
+}
+
+function clearCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function saveImage() {
+    const dataURL = canvas.toDataURL();
+    const link = document.createElement('a');
+    link.href = dataURL;
+    link.download = 'kat_drawing.png';
+    link.click();
+}
+
+function tweetImage() {
+    const tweetText = encodeURIComponent("Just drew a KAT on the blockchain! @katcoinsol $KAT 🐱");
+    const tweetURL = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    window.open(tweetURL, '_blank');
+}
+
+function toggleBackgroundMusic() {
+    const audio = document.getElementById('backgroundMusic');
+    if (audio.paused) {
+        audio.play();
+    } else {
+        audio.pause();
+    }
+}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$KAT</title>
+    <link rel="icon" href="https://sapphire-solid-dolphin-824.mypinata.cloud/ipfs/QmcmkGvm4FeyUEc51WXFSzue2rghm2Fnfh9GtPQ4HMZ5gm" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Marker Felt', sans-serif;
+            background-color: #f0e68c;
+            text-align: center;
+            padding: 20px;
+        }
+        .button {
+            font-family: inherit;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #ffcccb;
+            border: 2px solid black;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #f77;
+        }
+        .images-container {
+            position: relative;
+            display: inline-block;
+        }
+        .images-container img {
+            pointer-events: none; /* Prevent images from being selected */
         }
         .images-container img.main-image {
             width: 375px; /* Adjusted for desktop */

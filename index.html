@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>$KAT</title>
-    <link rel="icon" href="https://sapphire-solid-dolphin-824.mypinata.cloud/ipfs/QmcmkGvm4FeyUEc51WXFSzue2rghm2Fnfh9GtPQ4HMZ5gm" type="image/png">
+    <link rel="icon" href="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmUiKWZaoSGQ21hUxCTrKf8drgNKub3bVcB4USLUcqNsFb" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -92,12 +92,10 @@
     </style>
 </head>
 <body>
-
 <audio id="backgroundMusic" autoplay loop>
     <source src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmRTFSenk68MyWDHb1fdRehyFBns6gBr5oiuzmmcy1tiL8" type="audio/mpeg">
     Your browser does not support the audio element.
 </audio>
-
 <h1>$KAT</h1>
 <div>
     <div id="contractWrapper" class="contract-wrapper">
@@ -105,33 +103,28 @@
         <i class="fa fa-copy copy-icon" title="Copy to clipboard" onclick="copyToClipboard()"></i>
     </div>
 </div>
-
 <div class="images-container">
     <!-- New image positioned to the left -->
     <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmWhRb1HjGnJoyu1eEZECvL4w9Vi3ihSE5CMAqfWZWfVLV" alt="Additional KAT Image" class="new-image">
     <!-- Existing central image -->
     <img src="https://sapphire-electrical-shrimp-484.mypinata.cloud/ipfs/QmPicTLFhzCBcYaNToqBTi7X12afwjwmTvsSYooCCWpRJL" alt="$KAT Token" class="main-image">
 </div>
-
 <div>
     <button class="button" onclick="window.location.href='https://raydium.io';">BUY</button>
     <button class="button" onclick="window.location.href='https://twitter.com/katcoinsol';">TWITTER</button>
     <button class="button" onclick="window.location.href='https://t.me/katcoinsol';">TELEGRAM</button>
     <button class="button" onclick="toggleBackgroundMusic()"><i class="fas fa-play"></i></button>
 </div>
-
 <div id="about">
     <h2>About</h2>
     <p>juss a kat on teh blokchein</p>
     <p>✏️ drawl ur own kat bilow ✏️</p>
     <p>🐱 save kat b4 tweet 🐱</p>
 </div>
-
 <canvas id="drawingCanvas" width="400" height="400"></canvas><br>
 <button class="button" onclick="clearCanvas()">Clear</button>
 <button class="button" onclick="saveImage()">Save</button>
 <button class="button" onclick="tweetImage()">Tweet</button>
-
 <div id="tokenomics">
     <h2>Tokenomics</h2>
     <p>Buy/Sell Tax: 0%</p>
@@ -140,12 +133,10 @@
     <p>LP: Burned</p>
     <p>Mint: Revoked</p>
 </div>
-
 <div id="disclaimer">
     <h2>Disclaimer</h2>
     <p>$KAT is a memecoin made purely for entertainment purposes and should not be interpreted as financial advice.</p>
 </div>
-
 <script>
 function copyToClipboard() {
     const fullText = document.getElementById('contractAddress').innerText; // Get the full text including "CA:"
@@ -156,12 +147,10 @@ function copyToClipboard() {
         console.error('Error copying text to clipboard:', err);
     });
 }
-
 // Drawing Pad functionality
 const canvas = document.getElementById('drawingCanvas');
 const ctx = canvas.getContext('2d');
 let isDrawing = false;
-
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('touchstart', startDrawing);
 canvas.addEventListener('mousemove', draw);
@@ -177,87 +166,7 @@ canvas.addEventListener('touchmove', function(event) {
 function startDrawing(event) {
     isDrawing = true;
     const [x, y] = getCursorPosition(event);
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-}
-
-function draw(event) {
-    if (!isDrawing) return;
-    const [x, y] = getCursorPosition(event);
-    ctx.lineTo(x, y);
-    ctx.stroke();
-}
-
-function stopDrawing() {
-    isDrawing = false;
-}
-
-function getCursorPosition(event) {
-    let x, y;
-    if (event.touches && event.touches.length) {
-        const rect = canvas.getBoundingClientRect();
-        x = event.touches[0].clientX - rect.left;
-        y = event.touches[0].clientY - rect.top;
-    } else {
-        x = event.offsetX;
-        y = event.offsetY;
-    }
-    return [x, y];
-}
-
-function clearCanvas() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-function saveImage() {
-    // Save the current canvas state
-    const currentFillStyle = ctx.fillStyle;
-    const currentStrokeStyle = ctx.strokeStyle;
-
-    // Save the drawing as an image without clearing the canvas
-    const dataURL = canvas.toDataURL();
-
-    // Create a new canvas element to draw the image on
-    const tempCanvas = document.createElement('canvas');
-    const tempCtx = tempCanvas.getContext('2d');
-    tempCanvas.width = canvas.width;
-    tempCanvas.height = canvas.height;
-
-    // Fill the temp canvas with the background color
-    tempCtx.fillStyle = '#dde6cd'; // Background color
-    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-
-    // Load the saved drawing onto the temp canvas
-    const img = new Image();
-    img.onload = function() {
-        tempCtx.drawImage(img, 0, 0);
-        
-        // Save the image with the drawing on top of the background color
-        const link = document.createElement('a');
-        link.href = tempCanvas.toDataURL();
-        link.download = 'kat_drawing.png';
-        link.click();
-    };
-    img.src = dataURL;
-
-    // Restore the previous canvas state
-    ctx.fillStyle = currentFillStyle;
-    ctx.strokeStyle = currentStrokeStyle;
-}
-
-function tweetImage() {
-    const tweetText = encodeURIComponent("jst draewd a kat on teh blokchein! @katcoinsol $KAT 🐱");
-
-    // Open Twitter for composing a tweet with the provided text
-    const tweetURL = `https://twitter.com/intent/tweet?text=${tweetText}`;
-    window.open(tweetURL, '_blank');
-}
-
-function toggleBackgroundMusic() {
-    const audio = document.getElementById('backgroundMusic');
-    if (audio.paused) {
-        audio.play();
-    } else {
+@@ -256,6 +261,7 @@ <h2>Disclaimer</h2>
         audio.pause();
     }
 }
